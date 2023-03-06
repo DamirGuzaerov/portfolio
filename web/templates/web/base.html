@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DamirGuz</title>
+</head>
+<body>
+<header>
+    {% block menu %}
+    <menu>
+        <nav>
+            <ul>
+                {% for m in menu %}
+                <li>{{m}}</li>
+                {% endfor %}
+            </ul>
+        </nav>
+    {% endblock menu %}
+    </menu>
+</header>
+    {% block content %}
+    {% endblock %}
+</body>
+</html>

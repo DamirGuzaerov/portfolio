@@ -7,18 +7,22 @@
 <body>
 <header>
     {% block menu %}
-    <menu>
+        <menu>
         <nav>
-            <ul>
-                {% for m in menu %}
-                <li>{{m}}</li>
-                {% endfor %}
-            </ul>
+            <a href="{% url "main" %}">Main</a>
+            {% if user.is_anonymous %}
+                <a href="{% url "registration" %}">Sign Up</a>
+                <a href="{% url "auth" %}">Sign In</a>
+                {% else %}
+                {{ user.username }}
+                <a href="{% url "logout" %}">Logout</a>
+            {% endif %}
+
         </nav>
     {% endblock menu %}
     </menu>
 </header>
-    {% block content %}
-    {% endblock %}
+{% block content %}
+{% endblock %}
 </body>
 </html>

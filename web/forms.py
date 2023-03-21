@@ -25,6 +25,8 @@ class AuthForm(forms.Form):
 
 
 class ProjectAddForm(forms.ModelForm):
+    description = forms.CharField(widget=forms.Textarea())
+
     class Meta:
         model = Project
-        fields = ('name', 'description', 'link_to_source_code')
+        fields = ('name', 'description', 'link_to_source_code', 'preview_img')

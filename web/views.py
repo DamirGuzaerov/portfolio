@@ -1,12 +1,15 @@
 from django.shortcuts import render, redirect
 
-from web.forms import RegistrationForm, AuthForm,ProjectAddForm
+from web.forms import RegistrationForm, AuthForm, ProjectAddForm
 from django.contrib.auth import get_user_model, authenticate, login, logout
+from web.models import Project
 
 User = get_user_model()
 
+
 def main_view(request):
-    return render(request, 'web/main.html')
+    projects = Project.objects.all()
+    return render(request, 'web/main.html', {'projects': projects})
 
 
 def registration_view(request):
@@ -55,6 +58,15 @@ def projects_view(request):
     return render(request, 'web/projects.html', {'form': form})
 
 
-def project_add_view(request):
-    form = ProjectAddForm()
+def project_add_view(request, id=None):
+    project = None
+    if id is not None:
+        project = Project.objects.get(id=id)
+    form = ProjectAddForm(instance=project)
+    if request.method == 'POST':
+        form = ProjectAddForm(data=request.POST,instance=project)
+        if form.is_valid():
+            form.save()
+            redirect('main')
+
     return render(request, 'web/project_form.html', {'form': form})

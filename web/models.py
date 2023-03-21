@@ -30,6 +30,6 @@ class Project(models.Model):
     link_to_source_code = models.CharField(max_length=512)
     link_to_production = models.CharField(max_length=512)
     preview_img = models.ImageField(upload_to='project_previews/', null=False, blank=True)
-    experience = models.ForeignKey(Experience, on_delete=models.CASCADE)
+    experience = models.ForeignKey(Experience, on_delete=models.CASCADE, null=True)
     skills = models.ManyToManyField(Skill)
 

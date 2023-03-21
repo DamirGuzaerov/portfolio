@@ -15,9 +15,9 @@
                 <a href="{% url "auth" %}">Sign In</a>
                 {% else %}
                 {{ user.username }}
+                <a href="{% url "projects_add" %}">Projects creating</a>
                 <a href="{% url "logout" %}">Logout</a>
             {% endif %}
-
         </nav>
     {% endblock menu %}
     </menu>

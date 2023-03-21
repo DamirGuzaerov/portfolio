@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 
-from web.forms import RegistrationForm, AuthForm
+from web.forms import RegistrationForm, AuthForm,ProjectAddForm
 from django.contrib.auth import get_user_model, authenticate, login, logout
 
 User = get_user_model()
@@ -48,3 +48,13 @@ def authorization_view(request):
 def logout_view(request):
     logout(request)
     return redirect("main")
+
+
+def projects_view(request):
+    form = RegistrationForm()
+    return render(request, 'web/projects.html', {'form': form})
+
+
+def project_add_view(request):
+    form = ProjectAddForm()
+    return render(request, 'web/project_form.html', {'form': form})

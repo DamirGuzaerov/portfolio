@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth import get_user_model
+from web.models import Project
 
 User = get_user_model()
 
@@ -16,3 +17,9 @@ class RegistrationForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ('username', 'email', 'password', 'password_confirm')
+
+
+class ProjectAddForm(forms.ModelForm):
+    class Meta:
+        model = Project
+        fields = ('name', 'description', 'link_to_source_code')

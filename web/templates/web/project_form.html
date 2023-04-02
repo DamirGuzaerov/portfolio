@@ -3,7 +3,7 @@
 {% block content %}
     <h1>Project form</h1>
     <div>
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <ul>
                 {{ form.as_ul }}

@@ -53,18 +53,13 @@ def logout_view(request):
     return redirect("main")
 
 
-def projects_view(request):
-    form = RegistrationForm()
-    return render(request, 'web/projects.html', {'form': form})
-
-
 def project_add_view(request, id=None):
     project = None
     if id is not None:
         project = Project.objects.get(id=id)
     form = ProjectAddForm(instance=project)
     if request.method == 'POST':
-        form = ProjectAddForm(data=request.POST,instance=project)
+        form = ProjectAddForm(data=request.POST, files=request.FILES, instance=project)
         if form.is_valid():
             form.save()
             redirect('main')

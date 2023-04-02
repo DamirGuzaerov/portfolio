@@ -9,9 +9,7 @@
                 <p>{{ el.description }}</p>
                 <a href="{{ el.link_to_source_code }}">Source code</a>
                 {% if el.preview_img is not '' %}
-                    <img src="{{ el.preview_img }}" alt="preview_img">
-                {% else %}
-                    <img src="https://boolyshopping.com/lists/listimgs/1/437075l.png" alt="default_img">
+                    <img src="media/{{ el.preview_img }}" alt="preview_img">
                 {% endif %}
                 <a href='{% url 'projects_edit' el.id %}'>Edit</a>
             </li>

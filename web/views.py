@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
 
-from web.forms import RegistrationForm, AuthForm, ProjectAddForm
+from web.forms import RegistrationForm, AuthForm, ProjectAddForm, SkillForm
 from django.contrib.auth import get_user_model, authenticate, login, logout
-from web.models import Project
+from web.models import Project, Skill
 
 User = get_user_model()
 
@@ -65,3 +65,19 @@ def project_add_view(request, id=None):
             redirect('main')
 
     return render(request, 'web/project_form.html', {'form': form})
+
+
+def skill_view(request):
+    skills = Skill.objects.all()
+    form = SkillForm()
+    if request.method == 'POST':
+        form = SkillForm(data=request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('skills')
+    return render(request, 'web/skills.html', {'skills': skills, 'form': form})
+
+def skills_delete_view(request,id):
+    skill = Skill.objects.get(id=id)
+    skill.delete()
+    return redirect('skills')

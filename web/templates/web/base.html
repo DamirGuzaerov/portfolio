@@ -16,6 +16,7 @@
                 {% else %}
                 {{ user.username }}
                 <a href="{% url "projects_add" %}">Projects creating</a>
+                <a href="{% url "skills" %}">My skills</a>
                 <a href="{% url "logout" %}">Logout</a>
             {% endif %}
         </nav>

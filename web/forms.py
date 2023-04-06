@@ -29,7 +29,7 @@ class ProjectAddForm(forms.ModelForm):
 
     class Meta:
         model = Project
-        fields = ('name', 'description', 'link_to_source_code', 'preview_img')
+        fields = ('name', 'description', 'link_to_source_code', 'preview_img','skills')
 
 
 class SkillForm(forms.ModelForm):

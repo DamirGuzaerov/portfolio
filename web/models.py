@@ -11,6 +11,9 @@ class Skill(models.Model):
     name = models.CharField(max_length=128)
     level = models.PositiveIntegerField(default=10, validators=[MinValueValidator(0), MaxValueValidator(100)])
 
+    def __str__(self):
+        return self.name
+
 
 class Education(models.Model):
     start_date = models.DateTimeField()

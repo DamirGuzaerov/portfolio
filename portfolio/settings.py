@@ -48,6 +48,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'portfolio.debug.SqlPrintingMiddleware'
 ]
 
 ROOT_URLCONF = 'portfolio.urls'
@@ -130,3 +131,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_ROOT = 'media/'
 MEDIA_URL = 'media/'
+
+
+LOGIN_URL = 'auth'
+LOGIN_REDIRECT_URL = 'main'

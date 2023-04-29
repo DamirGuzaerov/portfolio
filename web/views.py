@@ -1,15 +1,33 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 
-from web.forms import RegistrationForm, AuthForm, ProjectAddForm, SkillForm
+from web.forms import RegistrationForm, AuthForm, ProjectAddForm, SkillForm, ProjectFiltersForm
 from django.contrib.auth import get_user_model, authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from web.models import Project, Skill
+from django.contrib.auth.decorators import user_passes_test
+from django.core.paginator import Paginator
 
 User = get_user_model()
 
 
 def main_view(request):
     projects = Project.objects.all()
-    return render(request, 'web/main.html', {'projects': projects})
+
+    filter_form = ProjectFiltersForm(request.GET)
+    filter_form.is_valid()
+    filters = filter_form.cleaned_data
+
+    if filters['search']:
+        projects = projects.filter(name__icontains=filters['search'])
+
+    total_count = projects.count()
+
+    page = request.GET.get('page', 1)
+    pagination = Paginator(projects, per_page=10)
+
+    return render(request, 'web/main.html', {'projects': pagination.get_page(page),
+                                             'filter_form': filter_form,
+                                             "total_count": total_count}, )
 
 
 def registration_view(request):
@@ -21,6 +39,7 @@ def registration_view(request):
             user = User(email=form.cleaned_data['email'], username=form.cleaned_data['username'])
             user.set_password(form.cleaned_data['password'])
             user.save()
+            return redirect('main')
     return render(request, 'web/registration.html',
                   {'form': form})
 
@@ -53,10 +72,12 @@ def logout_view(request):
     return redirect("main")
 
 
+@user_passes_test(lambda u: u.is_superuser, 'main')
+@login_required
 def project_add_view(request, id=None):
     project = None
     if id is not None:
-        project = Project.objects.get(id=id)
+        project = get_object_or_404(Project, id=id)
     form = ProjectAddForm(instance=project)
     if request.method == 'POST':
         form = ProjectAddForm(data=request.POST, files=request.FILES, instance=project)
@@ -67,6 +88,16 @@ def project_add_view(request, id=None):
     return render(request, 'web/project_form.html', {'form': form})
 
 
+@user_passes_test(lambda u: u.is_superuser, 'main')
+@login_required
+def projects_delete_view(request, id):
+    project = get_object_or_404(Project, id=id)
+    project.delete()
+    return redirect('main')
+
+
+@user_passes_test(lambda u: u.is_superuser, 'main')
+@login_required
 def skill_view(request):
     skills = Skill.objects.all()
     form = SkillForm()
@@ -77,7 +108,10 @@ def skill_view(request):
             return redirect('skills')
     return render(request, 'web/skills.html', {'skills': skills, 'form': form})
 
-def skills_delete_view(request,id):
-    skill = Skill.objects.get(id=id)
+
+@user_passes_test(lambda u: u.is_superuser, 'main')
+@login_required
+def skills_delete_view(request, id):
+    skill = get_object_or_404(Skill, id=id)
     skill.delete()
     return redirect('skills')

@@ -30,6 +30,7 @@ class Experience(models.Model):
 class Project(models.Model):
     name = models.CharField(max_length=128)
     description = models.CharField(max_length=512)
+    rate = models.FloatField(default=0, validators=[MinValueValidator(0.0), MaxValueValidator(10.0)])
     link_to_source_code = models.CharField(max_length=512)
     link_to_production = models.CharField(max_length=512)
     preview_img = models.ImageField(upload_to='project_previews/', null=False, blank=True)

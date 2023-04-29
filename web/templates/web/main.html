@@ -2,16 +2,56 @@
 
 {% block content %}
     <h1>main html</h1>
+    <nav>
+        {% if projects.has_previous %}
+            <a href="?page=1">В начало</a>
+            <a href="?page={{ projects.previous_page_number }}">На пред. страницу</a>
+        {% endif %}
+    </nav>
+    <h4>Страница {{ projects.number }} из {{ projects.paginator.num_pages }}</h4>
+    <nav>
+        {% if projects.has_next %}
+            <a href="?page={{ projects.next_page_number }}">На след. страницу</a>
+            <a href="?page={{ projects.paginator.num_pages }}">В конец</a>
+        {% endif %}
+    </nav>
+    <div>
+        <h3>Фильтры:</h3>
+        <form>
+            {% for field in filter_form %}
+                {{ field }}
+            {% endfor %}
+            <button>Найти</button>
+            <a href="?">Показать всё</a>
+        </form>
+    </div>
+    <h4>Всего записей: {{ total_count }}</h4>
     <ul>
         {% for el in projects %}
             <li>
                 <h2>{{ el.name }}</h2>
+                <h3>
+                    Рейтинг: {{ el.rate }} из 10
+                </h3>
+                <h4>
+                    Навыки:
+                    {% if el.skills %}
+                        {{ el.skills_count }}:
+                        [{% for skill in el.skills.all %}
+                        <small>
+                            {{ skill.name }}
+                        </small>
+                    {% endfor %}]
+                    {% endif %}
+                </h4>
                 <p>{{ el.description }}</p>
                 <a href="{{ el.link_to_source_code }}">Source code</a>
                 {% if el.preview_img is not '' %}
-                    <img src="media/{{ el.preview_img }}" alt="preview_img">
+                    <img style="height: 200px; width: 200px; object-fit: contain" src="media/{{ el.preview_img }}"
+                         alt="preview_img">
                 {% endif %}
                 <a href='{% url 'projects_edit' el.id %}'>Edit</a>
+                <a href='{% url 'projects_delete' el.id %}'>Delete</a>
             </li>
         {% endfor %}
     </ul>

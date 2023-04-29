@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth import get_user_model
+
 from web.models import Project, Skill
 
 User = get_user_model()
@@ -29,11 +30,18 @@ class ProjectAddForm(forms.ModelForm):
 
     class Meta:
         model = Project
-        fields = ('name', 'description', 'link_to_source_code', 'preview_img','skills')
+        fields = ('name', 'description', 'link_to_source_code', 'preview_img', 'skills', 'rate')
 
 
 class SkillForm(forms.ModelForm):
     class Meta:
         model = Skill
-        fields = ('name','level')
+        fields = ('name', 'level')
 
+
+class ProjectFiltersForm(forms.Form):
+    search = forms.CharField(widget=forms.TextInput(attrs={"placeholder": "Поиск"}), required=False)
+    rate = forms.FloatField(widget=forms.NumberInput(attrs={"placeholder": "Рейтинг"}),
+                            max_value=10,
+                            min_value=0,
+                            required=False)

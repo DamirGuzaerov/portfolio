@@ -1,0 +1,26 @@
+{% extends 'web/base.html' %}
+
+{% block content %}
+    <h1>Аналитика</h1>
+    <h3>Всего проектов: {{ overall_stat.id__count }}</h3>
+    <h3>Максимальный рейтинг среди проектов: {{ overall_stat.rate__max }}</h3>
+    <h3>Минимальный рейтинг среди проектов: {{ overall_stat.rate__min }}</h3>
+    <ul>
+        {% for skill in skill_stat %}
+            {% if skill.skills is None %}
+                <li>
+                    <b>
+                        {{ skill.count }} проекта без указания навыков
+                    </b>
+                </li>
+            {% else %}
+                <li>
+                    <b>
+                        id навыка: {{ skill.skills }} - {{ skill.count }} использованных в проектах навыков
+                    </b>
+                </li>
+            {% endif %}
+        {% endfor %}
+
+    </ul>
+{% endblock %}

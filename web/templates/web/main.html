@@ -22,6 +22,7 @@
                 {{ field }}
             {% endfor %}
             <button>Найти</button>
+            <a href="?">Показать всё</a>
         </form>
     </div>
     <h4>Всего записей: {{ total_count }}</h4>
@@ -29,6 +30,9 @@
         {% for el in projects %}
             <li>
                 <h2>{{ el.name }}</h2>
+                <h3>
+                    Рейтинг: {{ el.rate }} из 10
+                </h3>
                 <p>{{ el.description }}</p>
                 <a href="{{ el.link_to_source_code }}">Source code</a>
                 {% if el.preview_img is not '' %}

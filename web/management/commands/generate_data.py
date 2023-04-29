@@ -12,7 +12,8 @@ class Command(BaseCommand):
         for i in range(30):
             for j in range(randint(5, 10)):
                 projects.append(Project(name=f'generated project {i}-{j} NAME',
-                                        description=f'generated project {i}-{j} DESCRIPTION'))
+                                        description=f'generated project {i}-{j} DESCRIPTION',
+                                        rate=randint(0, 10)), )
 
         saved_projects = Project.objects.bulk_create(projects)
 

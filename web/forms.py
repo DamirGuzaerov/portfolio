@@ -30,7 +30,7 @@ class ProjectAddForm(forms.ModelForm):
 
     class Meta:
         model = Project
-        fields = ('name', 'description', 'link_to_source_code', 'preview_img', 'skills')
+        fields = ('name', 'description', 'link_to_source_code', 'preview_img', 'skills', 'rate')
 
 
 class SkillForm(forms.ModelForm):
@@ -41,3 +41,7 @@ class SkillForm(forms.ModelForm):
 
 class ProjectFiltersForm(forms.Form):
     search = forms.CharField(widget=forms.TextInput(attrs={"placeholder": "Поиск"}), required=False)
+    rate = forms.FloatField(widget=forms.NumberInput(attrs={"placeholder": "Рейтинг"}),
+                            max_value=10,
+                            min_value=0,
+                            required=False)

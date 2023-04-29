@@ -20,6 +20,9 @@ def main_view(request):
     if filters['search']:
         projects = projects.filter(name__icontains=filters['search'])
 
+    if filters['rate']:
+        projects = projects.filter(rate=filters['rate'])
+
     total_count = projects.count()
 
     page = request.GET.get('page', 1)

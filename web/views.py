@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from web.models import Project, Skill
 from django.contrib.auth.decorators import user_passes_test
 from django.core.paginator import Paginator
+from django.db.models import Count, Max, Min, Q
 
 User = get_user_model()
 
@@ -24,6 +25,10 @@ def main_view(request):
         projects = projects.filter(rate=filters['rate'])
 
     total_count = projects.count()
+
+    projects = projects.prefetch_related("skills").annotate(
+        skills_count=Count("skills")
+    )
 
     page = request.GET.get('page', 1)
     pagination = Paginator(projects, per_page=10)
@@ -118,3 +123,15 @@ def skills_delete_view(request, id):
     skill = get_object_or_404(Skill, id=id)
     skill.delete()
     return redirect('skills')
+
+
+def analytics_view(request):
+    overall_stat = Project.objects.aggregate(
+        Count("id"),
+        Max("rate"),
+        Min("rate")
+    )
+
+    skill_stat = Project.objects.all().values('skills').annotate(count=Count("id"))
+
+    return render(request, 'web/analytics.html', {"overall_stat": overall_stat, "skill_stat": skill_stat})

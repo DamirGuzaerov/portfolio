@@ -1,7 +1,7 @@
 from django.urls import path
 
 from web.views import main_view, registration_view, authorization_view, logout_view, project_add_view, skill_view, \
-    skills_delete_view, projects_delete_view
+    skills_delete_view, projects_delete_view, analytics_view
 
 urlpatterns = [
     path('', main_view, name="main"),
@@ -13,4 +13,5 @@ urlpatterns = [
     path('skills', skill_view, name='skills'),
     path('skills/<int:id>/delete', skills_delete_view, name='skills_delete'),
     path('projects/<int:id>/delete', projects_delete_view, name='projects_delete'),
+    path('analytics', analytics_view, name='analytics_view'),
 ]
